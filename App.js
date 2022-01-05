@@ -1,27 +1,45 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, Dimensions, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 import React, { useState } from 'react';
 import colors from "./colors";
-
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+ 
 
 export default function App() {
-  const [range, setRange] = useState('120 BPM');
+  let tempo = 120;
+  let [range, setRange] = useState(tempo + ' BPM');
   const [sliding, setSliding] = useState('Allegro');
+  let width = Dimensions.get("window").width;
   return (
     <View style={styles.container}>
-      <Text style ={{fontSize: 20, fontWeight: 'bold'}}>{range}</Text>
-      
+      <Text style ={{fontSize: 35, fontWeight: 'bold'}}>{range}</Text>
+
+      {/* slider code here */}
+
       <Slider
-        style = {{ width: 200, height: 40}}
+        style = {{ width: width * .7, height: 40}}
         minimumValue = {20}
         maximumValue = {200}
-        value = {120}
+        value = {tempo}
         minimumTrackTintColor = {colors.primary}
         thumbTintColor = {colors.primary}
         onValueChange = {value => updateValues(parseInt(value))}
       />
+
       <Text style ={{fontSize: 20, fontStyle: 'italic'}}>{sliding}</Text> 
+      <Button
+        onPress = {value => incrementTempo(Slider.value)}
+        title = "+"
+        color = {colors.primary}
+        fontSize = "50"
+      /> 
+       <Button
+        onPress = {value => decrementTempo(Slider.value)}
+        title = "-"
+        color = {colors.primary}
+        fontSize = "50"
+      />
 
       <StatusBar style="auto" />
     </View>
@@ -31,11 +49,14 @@ export default function App() {
     setTempoNum(value);
   }
   
+  //update the numerical value of the tempo as the slider is moved
   function setTempoNum(val){
-    setRange(val + " BPM")
+    tempo = val;
+    setRange(tempo + " BPM")
+    Slider.value = tempo
   }
   
-   
+  //  function to update the latin value associated with the tempo
    function setTempoText(val) {
     if (val <= 40){
           setSliding("Grave")
@@ -65,10 +86,31 @@ export default function App() {
           return
         }
   }
+  function incrementTempo(temp){
+    if (temp < 200) {
+      // log.d("HERE")
+      tempo = temp + 1
+      Slider.value = tempo
+      setTempoNum(tempo)
+      setTempoText(tempo)
+      return
+    }
+  return
+  }
+  function decrementTempo(temp){
+    if (temp > 20) {
+      // log.d("HERE")
+      tempo = temp - 1
+      Slider.value = tempo
+      setTempoNum(tempo)
+      setTempoText(tempo)
+      return
+    }
+  return
+  }
 }
 
-
-
+//styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
