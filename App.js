@@ -7,9 +7,11 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
  
 
 export default function App() {
-  let tempo = 120;
-  let [range, setRange] = useState(tempo + ' BPM');
+  let tempo;
+  const [range, setRange] = useState(tempo +  ' BPM');
   const [sliding, setSliding] = useState('Allegro');
+  // const [num, check] = useState(Slider.value);
+
   let width = Dimensions.get("window").width;
   return (
     <View style={styles.container}>
@@ -21,6 +23,10 @@ export default function App() {
         style = {{ width: width * .7, height: 40}}
         minimumValue = {20}
         maximumValue = {200}
+        //value of the slider at any given point
+        tempo = {120}
+        // step = {tempo}
+        //INITIAL value of the slider
         value = {tempo}
         minimumTrackTintColor = {colors.primary}
         thumbTintColor = {colors.primary}
@@ -29,21 +35,32 @@ export default function App() {
 
       <Text style ={{fontSize: 20, fontStyle: 'italic'}}>{sliding}</Text> 
       <Button
-        onPress = {value => incrementTempo(Slider.value)}
+        onPress = {value => incrementTempo(Slider.step)}
         title = "+"
         color = {colors.primary}
         fontSize = "50"
       /> 
        <Button
-        onPress = {value => decrementTempo(Slider.value)}
+        onPress = {value => decrementTempo(Slider.step)}
         title = "-"
         color = {colors.primary}
         fontSize = "50"
       />
+      {/* <Text style ={{fontSize: 20, fontStyle: 'italic'}}>{check}</Text>  */}
+
 
       <StatusBar style="auto" />
     </View>
   );
+  /**
+   * 
+   * @TODO:
+   * 
+   * is there a way to update the sliders thumb positon without sliding?
+   * might need to build a slider from scratch, not sure if this one supports that
+   * 
+   */
+
   function updateValues(value){
     setTempoText(value);
     setTempoNum(value);
@@ -53,7 +70,7 @@ export default function App() {
   function setTempoNum(val){
     tempo = val;
     setRange(tempo + " BPM")
-    Slider.value = tempo
+    Slider.step = tempo
   }
   
   //  function to update the latin value associated with the tempo
@@ -89,8 +106,8 @@ export default function App() {
   function incrementTempo(temp){
     if (temp < 200) {
       // log.d("HERE")
-      tempo = temp + 1
-      Slider.value = tempo
+      // tempo = temp + 1
+      Slider.step++
       setTempoNum(tempo)
       setTempoText(tempo)
       return
@@ -101,7 +118,7 @@ export default function App() {
     if (temp > 20) {
       // log.d("HERE")
       tempo = temp - 1
-      Slider.value = tempo
+      Slider.step--
       setTempoNum(tempo)
       setTempoText(tempo)
       return
