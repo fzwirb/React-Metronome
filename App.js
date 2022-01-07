@@ -4,10 +4,13 @@ import Slider from '@react-native-community/slider';
 import React, { useState } from 'react';
 import colors from "./colors";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Player from './play_button';
+
+
  
 
 export default function App() {
-  let tempo;
+  let tempo = 120;
   const [range, setRange] = useState(tempo +  ' BPM');
   const [sliding, setSliding] = useState('Allegro');
   // const [num, check] = useState(Slider.value);
@@ -46,7 +49,7 @@ export default function App() {
         color = {colors.primary}
         fontSize = "50"
       />
-      {/* <Text style ={{fontSize: 20, fontStyle: 'italic'}}>{check}</Text>  */}
+      <Player />
 
 
       <StatusBar style="auto" />
@@ -75,6 +78,7 @@ export default function App() {
   
   //  function to update the latin value associated with the tempo
    function setTempoText(val) {
+     console.log("in set tempo")
     if (val <= 40){
           setSliding("Grave")
         }
@@ -106,7 +110,7 @@ export default function App() {
   function incrementTempo(temp){
     if (temp < 200) {
       // log.d("HERE")
-      // tempo = temp + 1
+      tempo = temp + 1
       Slider.step++
       setTempoNum(tempo)
       setTempoText(tempo)
