@@ -7,16 +7,17 @@ import App from './App'
 import { render } from 'react-dom'
 
 let BPM = App.tempo     
-
 class Player extends Component {
 
 
 
 constructor(props) {
   super(props)
+  let playbool = false
   this.state = {
     playing: false
   }
+  this.handlePlayMet = this.handlePlayMet.bind(this) //bind the state to the play method so that it can be used
 }
 
 handlePlayerClick = () => {
@@ -24,29 +25,50 @@ handlePlayerClick = () => {
     console.log(this.state.playing)
 
   if (!this.state.playing) {
-    this.setState({playing: true})
-    console.log("in NOT PLAYING")
-    console.log(this.state.playing)
+    console.log("IN FIRST IF")
+    this.setState({playing: true}, 
+      () => {this.handlePlayMet()});
+    // console.log(this.state.playing)
+    // this.handlePlayMet()
 
   } else {
-    this.setState({playing: false})
-  }
-  console.log("DONE")
-  if(this.state.playing == true){
-    this.handlePlayMet(this.state.playin)
+    console.log("IN ELSE")
+    this.setState({playing: false}, 
+      () => {this.handlePlayMet()});  
+    console.log("DONE")
+    return
   }
 //   this.handlePlayMet(this.state.playing)
 } 
 
-handlePlayMet = (playing) => {
+returnFunct = () => {
+  console.log("RETURN")
+  return
+}
+updatePlayingInLoop = () => {
+    console.log("updatePLAYINGLOOP CALLED")
+    return inner = this.state.playing
+}
+
+handlePlayMet = () => {
     console.log("in play met!")
-    console.log(playing)
-    if(!playing) {
+    console.log(this.state.playing)
+    this.playbool = this.state.playing
+    let inner = this.playbool
+    console.log("PLAYBOOL: " + this.playbool)
+    if(this.state.playing) { 
         // console.log("WHERE AM I")
-        (function loop() {
+        // var playBoolInner = this.playbool
+        (function loop()  {
+          // this.inner = this.updatePlayingInLoop()
+          console.log("PLAYBOOL INNER" + this.state.playing)
+
+            if(!inner) {
+              console.log("RETURNED")
+              return
+            }
             setTimeout(function () {
                 console.log("BEEP")
-              loop()
             }, 6000); //60000 = 60000ms = 60s / bpm
           }());
     }
