@@ -49,6 +49,21 @@ updatePlayingInLoop = () => {
     console.log("updatePLAYINGLOOP CALLED")
     return inner = this.state.playing
 }
+startAndStop(bool) { 
+    // var playBoolInner = this.playbool
+    (function loop()  {
+        
+              setTimeout(function () {
+                  console.log("BEEP")
+                  if(!bool) {
+                    console.log("RETURNED")
+                    return
+                  }
+                loop()
+              }, 6000); //60000 = 60000ms = 60s / bpm
+            }());
+}
+
 
 handlePlayMet = () => {
     console.log("in play met!")
@@ -56,22 +71,7 @@ handlePlayMet = () => {
     this.playbool = this.state.playing
     let inner = this.playbool
     console.log("PLAYBOOL: " + this.playbool)
-    if(this.state.playing) { 
-        // console.log("WHERE AM I")
-        // var playBoolInner = this.playbool
-        (function loop()  {
-          // this.inner = this.updatePlayingInLoop()
-          console.log("PLAYBOOL INNER" + this.state.playing)
-
-            if(!inner) {
-              console.log("RETURNED")
-              return
-            }
-            setTimeout(function () {
-                console.log("BEEP")
-            }, 6000); //60000 = 60000ms = 60s / bpm
-          }());
-    }
+    this.startAndStop(inner)
 }
 
 // handlePlayMet = () => {
