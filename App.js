@@ -120,7 +120,6 @@ export default function App() {
   }
   function decrementTempo(temp){
     if (temp > 20) {
-      // log.d("HERE")
       tempo = temp - 1
       Slider.step--
       setTempoNum(tempo)
